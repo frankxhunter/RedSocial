@@ -1,13 +1,13 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import GenericAPIView
-from rest_framework.utils import json
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import UserSerializer
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_protect
 
 
@@ -28,6 +28,7 @@ class LoginApiView(APIView):
         if user is not None and user.is_active:
             login(request, user)
             data = {
+                'id': user.id,
                 'username': user.username,
                 'email': user.email
             }
@@ -55,3 +56,11 @@ class RegisterApiView(GenericAPIView):
 
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class LogoutApiView(APIView, LoginRequiredMixin):
+
+    def post(self, request):
+        logout(request)
+        return Response(status=status.HTTP_200_OK)
+
