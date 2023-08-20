@@ -48,7 +48,7 @@
                     style="text-transform: capitalize"
                     >Log in With Google</v-btn
                   >
-                  <p>if you don`t have a count <a href="" style="margin-top: 50px;">Create one</a></p>
+                  <p>Haven`t signed up?<a href="" style="margin-top: 50px;">Clic here</a></p>
                 </form>
           </v-card>
         </v-col>

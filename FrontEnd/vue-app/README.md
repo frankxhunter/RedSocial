@@ -1,19 +1,14 @@
-# vueroutes
+# Aqui te dejo la explicacion de como abrir el proyecto
 
-## Project setup
-```
+Abre la consola en la carpeta que tiene el frontEnd (vue-app)
+
+Introduce el siguiente comando para que se instalen todas las dependencias 
 npm install
-```
 
-### Compiles and hot-reloads for development
-```
+Ya cuando se haya instalado todo pones el siguiente comando para correr el proyecto
+
 npm run serve
-```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+Ahora te saldran 2 direccion, coge la localhost y copiala en el navegador, o dale control+clic a la direccion en la consola, te lo abrira automaticamente
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Actualmente no saldra nada pq la pagina principal no la he tocado, pero en la direccion le agregas /login y te saldra el login
