@@ -1,0 +1,21 @@
+Te voy a dejar por aqui el virtual env donde estan las librerias que tienes que usar para correr
+Django
+
+para activar el virtual env tienes que en la consola, situarte en la carpeta que contiene a la carpeta venv, luego
+corres el comando ./venv/Scripts/activate. En caso de que no funcione, debes instalar las siguientes librerias al menos:
+django, django-cors-headers y para correr el programa tienes que ir en la consola a la carpeta que contiene el archivo
+manage.py y correr py manage.py runserver y correra en 127.0.0.1:800. Te dira page not found porque no se esta
+renderizando nada ahi, puesto que solo esta implementado registro y login
+
+La url para registrarse es http://127.0.0.1:8000/api/register/, haces un post a esa url
+con username, email y password y se va a registrar el usuario, para que lo compruebes ve a
+http://127.0.0.1:8000/admin e ingresa con username kevin y password kevin1234, revisa Users y
+ahi estara
+
+para login es http://127.0.0.1:8000/api/login/ en lugar de hacer el post con username y email, hazlo
+con solo 2 campos, username-email y password, revisa la funcion de todas formas para que veas
+lo que pasa, esta en base=>views. Al loguearte se devuelven los datos de la persona que se logueo
+
+Si bien puedes registrarte y loguearte desde esas url, no cumple objetivo lol, bueno ya sabbras q hacer
+
+PD: NO me corrio lo de VUE
