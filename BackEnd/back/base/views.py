@@ -1,14 +1,10 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.utils.decorators import method_decorator
-from rest_framework.exceptions import ValidationError
-from rest_framework.generics import GenericAPIView
+from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, generics
 from .serializers import UserSerializer
 from django.contrib.auth import authenticate, login, logout
-from django.views.decorators.csrf import csrf_protect
 
 
 # Se puede introducir tanto username como email para loguearse
@@ -38,29 +34,36 @@ class LoginApiView(APIView):
             return Response({'error': 'Invalid Credentials'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class RegisterApiView(GenericAPIView):
+class RegisterApiView(generics.CreateAPIView):
+    queryset = User.objects.all()
     serializer_class = UserSerializer
 
-    @method_decorator(csrf_protect)
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
 
-        try:
-            serializer.is_valid(raise_exception=True)
-
-        except ValidationError as exc:
-            return Response(exc.detail, status=status.HTTP_400_BAD_REQUEST)
-
-        except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
-class LogoutApiView(APIView, LoginRequiredMixin):
+class LogoutApiView(APIView):
 
     def post(self, request):
         logout(request)
         return Response(status=status.HTTP_200_OK)
 
+
+class UsersApiView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class UserDetailApiView(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+@api_view(['GET'])
+def allowed_urls(request, *args, **kwargs):
+    urls = [
+        {"POST": ["http://127.0.0.1:8000/api/login",
+                  "http://127.0.0.1:8000/api/register",
+                  "http://127.0.0.1:8000/api/users/"]
+         },
+        {"GET": ["http://127.0.0.1:8000/api/users",
+                 "http://127.0.0.1:8000/api/users/<str:pk>"]},
+    ]
+    return Response(urls)
