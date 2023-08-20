@@ -53,3 +53,10 @@ export default {
   }),
 };
 </script>
+
+<style>
+template{
+  background-color: antiquewhite;
+}
+
+</style>
