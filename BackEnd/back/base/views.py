@@ -1,4 +1,7 @@
+import hashlib
+import secrets
 from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -10,6 +13,7 @@ from django.contrib.auth import authenticate, login, logout
 # Se puede introducir tanto username como email para loguearse
 class LoginApiView(APIView):
 
+    # Por ahora el inicio de sesion se maneja con sesiones, pero para mejor escalabilidad, usar Tokens
     def post(self, request):
         # Al hacer el post ponle este nombre al input para que lo detecte bien
         username_or_email = request.data.get('username-email')
@@ -19,19 +23,22 @@ class LoginApiView(APIView):
             user = authenticate(email=username_or_email, password=password)
         else:
             user = authenticate(username=username_or_email, password=password)
-            print(user)
 
         if user is not None and user.is_active:
             login(request, user)
+            # token = self.generate_token(user)
             data = {
                 'id': user.id,
                 'username': user.username,
-                'email': user.email
             }
             return Response(data, status=status.HTTP_200_OK)
 
-        else:
-            return Response({'error': 'Invalid Credentials'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': 'Invalid Credentials'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # def generate_token(self, user):
+    #     token = secrets.token_hex(32)
+    #     hash_token = hashlib.sha256(token.encode('utf-8')).hexdigest()
+    #     return token
 
 
 class RegisterApiView(generics.CreateAPIView):
@@ -39,11 +46,9 @@ class RegisterApiView(generics.CreateAPIView):
     serializer_class = UserSerializer
 
 
-class LogoutApiView(APIView):
-
-    def post(self, request):
-        logout(request)
-        return Response(status=status.HTTP_200_OK)
+@api_view(['POST'])
+def logout_user(request):
+    logout(request)
 
 
 class UsersApiView(generics.ListAPIView):
@@ -60,8 +65,8 @@ class UserDetailApiView(generics.RetrieveAPIView):
 def allowed_urls(request, *args, **kwargs):
     urls = [
         {"POST": ["http://127.0.0.1:8000/api/login",
-                  "http://127.0.0.1:8000/api/register",
-                  "http://127.0.0.1:8000/api/users/"]
+                  "http://127.0.0.1:8000/api/register"
+                  ]
          },
         {"GET": ["http://127.0.0.1:8000/api/users",
                  "http://127.0.0.1:8000/api/users/<str:pk>"]},
