@@ -72,8 +72,10 @@ class UpdateUserProfile(generics.UpdateAPIView):
     def update(self, request, *args, **kwargs):
         profile = self.get_object()
         user = profile.user
-        user.username = request.data['user.username']
-        user.save()
+
+        if user.username != request.data['user.username']:
+            user.username = request.data['user.username']
+            user.save()
 
         profile.name = request.data['name']
         profile.bio = request.data['bio']
