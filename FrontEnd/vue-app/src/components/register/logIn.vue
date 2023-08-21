@@ -5,13 +5,13 @@
         <h6 class="v-cart_title">Please enter your details</h6>
         <v-form @submit.prevent="submit" v-model="valid" ref="formLogIn">
           <v-text-field
-            v-model="email"
+            v-model="user.username"
             label="E-mail"
             required
             :rules="emailRules"
           ></v-text-field>
           <v-text-field
-            v-model="password"
+            v-model="user.password"
             label="Password"
             required
             :rules="passwordRules"
@@ -44,8 +44,10 @@
 export default {
     data: () => ({
     valid: false,
-    email: "",
-    password: "",
+    user:{
+      username:"",
+      password:"",
+    },
     passwordRules: [
         v => !!v || 'Password is required',
         v => v.length>3 || 'Required 4 characters',
@@ -64,6 +66,14 @@ export default {
      if( this.$refs.formLogIn.validate()){
       console.log("Funciona")
       //Aqui poner codigo de la peticion http
+      this.$http.post("http://127.0.0.1:8000/api/login/",this.user).then(
+        response=>{
+          console.log(response)
+          this.$router.push({name: 'home'})
+        }
+      ).catch(error=>{
+        console.log(error)
+      })
      }
     },
    
