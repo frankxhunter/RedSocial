@@ -73,12 +73,21 @@ class UpdateUserProfile(generics.UpdateAPIView):
         profile = self.get_object()
         user = profile.user
 
-        if user.username != request.data['user.username']:
-            user.username = request.data['user.username']
-            user.save()
+        username = request.data['user.username']
+        profile_name = request.data['name']
+        profile_bio = request.data['bio']
 
-        profile.name = request.data['name']
-        profile.bio = request.data['bio']
+        try:
+            if user.username != username and username:
+                user.username = username
+                user.save()
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        if profile_name:
+            profile.name = profile_name
+        if profile_bio:
+            profile.bio = profile_bio
         profile.save()
 
         serializer = self.serializer_class(profile)
