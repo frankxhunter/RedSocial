@@ -66,14 +66,22 @@ export default {
      if( this.$refs.formLogIn.validate()){
       console.log("Funciona")
       //Aqui poner codigo de la peticion http
-      this.$http.post("http://127.0.0.1:8000/api/login/",this.user).then(
-        response=>{
-          console.log(response)
-          this.$router.push({name: 'home'})
-        }
-      ).catch(error=>{
-        console.log(error)
-      })
+      this.$axios
+          .post("/api/login/", {
+            "username-email": this.user.username,
+            "password": this.user.password,
+          })
+          .then((response) => {
+            console.log(response);
+
+            localStorage.setItem(`token`, response.data.token);
+            this.$axios.defaults.headers.common['Authorization'] = `${localStorage.getItem('token')}`;
+            this.$router.push({name: 'main'})
+          })
+          .catch((error) => {
+            console.log("This is a message of the error")
+            alert(error.message);
+          });
      }
     },
    

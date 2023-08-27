@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import UserVue from '@/components/user/User.vue'
-import HomeVue from '@/components/Home.vue'
+import HomeVue from '@/views/Home.vue'
 import RegisterVue from '@/views/RegisterVue.vue'
-import HelloWorldVue from '@/components/HelloWorld.vue'
+import MainVue from '@/views/Main.vue'
+import ChatVue from '@/views/Chat.vue'
+
 
 Vue.use(VueRouter)
 
@@ -23,9 +25,15 @@ const routes = [
     component: UserVue
   },
   {
-    path: '/hello',
-    component: HelloWorldVue,
+    path: '/main',
+    name: 'main',
+    component: MainVue,
   },
+  {
+    path: '/chat',
+    name: 'chat',
+    component: ChatVue,
+  }
   
 ]
 
