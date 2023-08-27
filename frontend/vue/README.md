@@ -15,4 +15,6 @@ Actualmente no saldra nada pq la pagina principal no la he tocado, pero en la di
 
 # Dependencias que he ido agregando
 yarn add vue-resource
+npm install axios
+
 
