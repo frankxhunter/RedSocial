@@ -74,7 +74,7 @@ export default {
           .then((response) => {
             console.log(response);
 
-            localStorage.setItem(`token`, response.data.token);
+            localStorage.setItem(`token`,"token "+response.data.token);
             this.$axios.defaults.headers.common['Authorization'] = `${localStorage.getItem('token')}`;
             this.$router.push({name: 'main'})
           })

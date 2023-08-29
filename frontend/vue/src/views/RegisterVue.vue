@@ -58,6 +58,8 @@ export default {
   width: 100%;
   background-color: rgba(15, 14, 14, 0.847);
   display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .content_img{
   display: flex;

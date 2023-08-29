@@ -16,6 +16,16 @@ Vue.config.productionTip = false
 
 Vue.use(VueRouter)
 
+Vue.directive('forUpdated', {
+  componentUpdated(el, binding, vnode) {
+    // Llamar a la función después de que se actualice el v-for
+    //vnode.context[binding.value]();
+    const scroll = document.getElementById("scroll");
+    scroll.scrollTop = scroll.scrollHeight;
+  },
+});
+
+
 new Vue({
   router,
   vuetify,
